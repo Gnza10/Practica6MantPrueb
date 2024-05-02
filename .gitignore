@@ -15,3 +15,10 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+p6/src/.DS_Store
+p6/src/main/.DS_Store
+p6/src/main/java/com/.DS_Store
+p6/src/main/java/.DS_Store
+p6/src/main/java/com/uma/.DS_Store
+p6/src/main/java/com/uma/example/springuma/.DS_Store
+p6/src/main/java/com/uma/example/.DS_Store
