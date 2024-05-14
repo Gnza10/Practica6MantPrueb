@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +56,7 @@ public class MedicoControllerIT extends AbstractIntegration{
 
     @Test
     @DisplayName("Test to verify if the medico is updated")
-    public void testUpdateMedico() throws Exception {
+    public void testUpdateMedico_returnsUpdatedMedico() throws Exception {
       //Arrange
         this.mockMvc.perform(post("/medico")
         .contentType("application/json")
@@ -81,6 +83,45 @@ public class MedicoControllerIT extends AbstractIntegration{
          .andExpect(status().is2xxSuccessful())
          .andExpect(content().contentType("application/json"))
          .andExpect(jsonPath("$.dni").value(medico.getDni()));
+    }
+
+    @Test
+    @DisplayName("Test to verify if the medico is deleted")
+    public void testDeleteMedico_Returns2xx() throws Exception {
+      //Arrange
+        this.mockMvc.perform(post("/medico")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(medico)))
+        .andExpect(status().isCreated())
+        .andExpect(status().is2xxSuccessful());
+
+        this.mockMvc.perform(get("/medico/1"))
+         .andDo(print())
+         .andExpect(status().is2xxSuccessful())
+         .andExpect(content().contentType("application/json"))
+         .andExpect(jsonPath("$.dni").value(medico.getDni()));
+
+
+        //Act
+        this.mockMvc.perform(delete("/medico/1"))
+        .andExpect(status().is2xxSuccessful());       
+    }
+
+    @Test
+    @DisplayName("Test to verify if the medico is found by DNI")
+    public void testGetMedicoByDni_ReturnsMedico() throws Exception {
+      //Arrange
+        this.mockMvc.perform(post("/medico")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(medico)))
+        .andExpect(status().isCreated())
+        .andExpect(status().is2xxSuccessful());
+
+        //Act
+        this.mockMvc.perform(get("/medico/dni/1"))
+        .andExpect(status().is2xxSuccessful())
+        .andExpect(content().contentType("application/json"))
+        .andExpect(jsonPath("$.dni").value(medico.getDni()));
     }
     
 }
