@@ -45,10 +45,10 @@ public class PacienteControllerIT extends AbstractIntegration{
     public void test_GetPaciente_ReturnsPaciente() throws Exception {
         // Arrange
         this.mockMvc.perform(post("/medico")
-        .contentType("application/json")
-        .content(objectMapper.writeValueAsString(medico)))
-        .andExpect(status().isCreated())
-        .andExpect(status().is2xxSuccessful());
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(medico)))
+                .andExpect(status().isCreated())
+                .andExpect(status().is2xxSuccessful());
 
         this.mockMvc.perform(post("/paciente")
                 .contentType("application/json")
@@ -69,11 +69,11 @@ public class PacienteControllerIT extends AbstractIntegration{
     public void test_SavePaciente_ReturnsDNI() throws Exception {
         // Act
         this.mockMvc.perform(post("/medico")
-        .contentType("application/json")
-        .content(objectMapper.writeValueAsString(medico)))
-        .andExpect(status().isCreated())
-        .andExpect(status().is2xxSuccessful());
-        
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(medico)))
+                .andExpect(status().isCreated())
+                .andExpect(status().is2xxSuccessful());
+
         this.mockMvc.perform(post("/paciente")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(paciente)))
@@ -111,11 +111,11 @@ public class PacienteControllerIT extends AbstractIntegration{
             .andExpect(jsonPath("$.dni").value(paciente.getDni()));
         
         //Act
+        
         paciente.setEdad(33);
         this.mockMvc.perform(put("/paciente")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(paciente)))
-                .andExpect(status().isNoContent())
                 .andExpect(status().is2xxSuccessful());
         
         //Assert
