@@ -37,13 +37,19 @@ public class PacienteControllerIT extends AbstractIntegration{
         medico = new Medico("1", "Grenheir", "Radiólogo");
         medico.setId(1);
         paciente = new Paciente("Pedro", 32, "Cita cardiologia", "12345678P", medico);
-        paciente.setId(2);
+        paciente.setId(1);
     }
 
     @Test
     @DisplayName("Test to verify if the patient is found")
     public void test_GetPaciente_ReturnsPaciente() throws Exception {
         // Arrange
+        this.mockMvc.perform(post("/medico")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(medico)))
+        .andExpect(status().isCreated())
+        .andExpect(status().is2xxSuccessful());
+
         this.mockMvc.perform(post("/paciente")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(paciente)))
@@ -51,7 +57,7 @@ public class PacienteControllerIT extends AbstractIntegration{
                 .andExpect(status().is2xxSuccessful());
         
         // Act
-        this.mockMvc.perform(get("/paciente/2"))
+        this.mockMvc.perform(get("/paciente/1"))
             .andDo(print())
             .andExpect(status().is2xxSuccessful())
             .andExpect(content().contentType("application/json"))
@@ -62,6 +68,12 @@ public class PacienteControllerIT extends AbstractIntegration{
     @DisplayName("Test to verify if the patient is saved")
     public void test_SavePaciente_ReturnsDNI() throws Exception {
         // Act
+        this.mockMvc.perform(post("/medico")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(medico)))
+        .andExpect(status().isCreated())
+        .andExpect(status().is2xxSuccessful());
+        
         this.mockMvc.perform(post("/paciente")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(paciente)))
@@ -80,6 +92,12 @@ public class PacienteControllerIT extends AbstractIntegration{
     @DisplayName("Test to verify if the patient is updated")
     public void testUpdatePaciente_returnsUpdatedPaciente() throws Exception {
       //Arrange
+        this.mockMvc.perform(post("/medico")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(medico)))
+                .andExpect(status().isCreated())
+                .andExpect(status().is2xxSuccessful());
+
         this.mockMvc.perform(post("/paciente")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(paciente)))
@@ -112,6 +130,11 @@ public class PacienteControllerIT extends AbstractIntegration{
     @DisplayName("Test to verify if the patient is deleted")
     public void testDeletePaciente_Returns2xx() throws Exception {
       //Arrange
+        this.mockMvc.perform(post("/medico")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(medico)))
+                .andExpect(status().isCreated())
+                .andExpect(status().is2xxSuccessful());
         this.mockMvc.perform(post("/paciente")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(paciente)))
@@ -136,6 +159,11 @@ public class PacienteControllerIT extends AbstractIntegration{
     @DisplayName("Test to see verify the patients of a doctor")
     public void testGetPacientesMedico_ReturnsListOfPacientes() throws Exception {
         // Arrange
+        this.mockMvc.perform(post("/medico")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(medico)))
+                .andExpect(status().isCreated())
+                .andExpect(status().is2xxSuccessful());
         this.mockMvc.perform(post("/paciente")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(paciente)))
