@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -128,13 +129,14 @@ public class PacienteControllerIT extends AbstractIntegration{
 
     @Test
     @DisplayName("Test to verify if the patient is deleted")
-    public void testDeletePaciente_Returns2xx() throws Exception {
+    public void test_DeletePaciente_Returns2xx() throws Exception {
       //Arrange
         this.mockMvc.perform(post("/medico")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(medico)))
                 .andExpect(status().isCreated())
                 .andExpect(status().is2xxSuccessful());
+
         this.mockMvc.perform(post("/paciente")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(paciente)))
@@ -148,11 +150,9 @@ public class PacienteControllerIT extends AbstractIntegration{
             .andExpect(jsonPath("$.dni").value(paciente.getDni()));
         
         //Act
-        this.mockMvc.perform(get("/paciente/1"))
+        this.mockMvc.perform(delete("/paciente/1"))
             .andDo(print())
-            .andExpect(status().is2xxSuccessful())
-            .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("$.dni").value(paciente.getDni()));
+            .andExpect(status().is2xxSuccessful());
     }
 
     @Test
